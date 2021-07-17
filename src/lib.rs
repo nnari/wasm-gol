@@ -1,15 +1,16 @@
 mod utils;
-use std::fmt::format;
+use rand::distributions::Standard;
+use rand::prelude::*;
 use std::fmt;
+use std::fmt::format;
 use wasm_bindgen::prelude::*;
-
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
 // allocator.
 #[cfg(feature = "wee_alloc")]
 #[gloBal_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 #[wasm_bindgen]
-extern {
+extern "C" {
     fn alert(s: &str);
 }
 
@@ -18,7 +19,16 @@ extern {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Cell {
     Dead = 0,
-    Alive = 1
+    Alive = 1,
+}
+
+impl Distribution<Cell> for Standard {
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Cell {
+        match rng.gen_bool(0.5) {
+            true => Cell::Alive,
+            false => Cell::Dead,
+        }
+    }
 }
 
 #[wasm_bindgen]
@@ -31,25 +41,36 @@ pub struct Universe {
 #[wasm_bindgen]
 impl Universe {
     fn get_index(&self, row: u32, column: u32) -> usize {
-        (row * self.width + column) as usize    
+        (row * self.width + column) as usize
     }
 
-    pub fn new() -> Self {
-        const WIDTH: u32 = 64;
-        const HEIGHT: u32 = 64;
+    pub fn width(&self) -> u32 {
+        self.width
+    }
 
-        let cells = (0..WIDTH * HEIGHT)
-            .map(|i| {
-                if i % 2 == 0 || i % 7 == 0 {
-                    Cell::Alive
-                } else {
-                    Cell::Dead
-                }
-            }).collect();
+    pub fn height(&self) -> u32 {
+        self.height
+    }
 
+    pub fn cells(&self) -> *const Cell {
+        self.cells.as_ptr()
+    }
+
+    fn generate_random_cells(width: u32, height: u32) -> Vec<Cell> {
+        (0..width * height)
+            .map(|i| rand::random::<Cell>())
+            .collect()
+    }
+
+    pub fn restart(&mut self) {
+        self.cells = Universe::generate_random_cells(self.width, self.height);
+    }
+
+    pub fn new(width: u32, height: u32) -> Self {
+        let cells = Universe::generate_random_cells(width, height);
         Universe {
-            width: WIDTH,
-            height: HEIGHT,
+            width,
+            height,
             cells
         }
     }
@@ -101,8 +122,8 @@ impl fmt::Display for Universe {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         for line in self.cells.as_slice().chunks(self.width as usize) {
             for &cell in line {
-              let symbol = if cell == Cell::Dead { '◻' } else { '◼' };
-              write!(f, "{}", symbol)?;
+                let symbol = if cell == Cell::Dead { '◻' } else { '◼' };
+                write!(f, "{}", symbol)?;
             }
             write!(f, "\n")?;
         }
@@ -112,7 +133,6 @@ impl fmt::Display for Universe {
 
 #[wasm_bindgen]
 pub fn greet(name: &str) {
-    #[allow(unused_unsafe)]
     unsafe {
         alert(format!("Hello {}!", name).as_str());
     }
