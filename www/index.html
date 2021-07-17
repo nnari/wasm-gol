@@ -5,7 +5,7 @@
     <style>
       body {
         background-color: #0f0f0f;
-        color: #a3a3a3;
+        color: #ca5858;
         top: 0;
         font-size: 130%;
         left: 0;
@@ -14,11 +14,26 @@
         margin: 0;
         display: flex;
         line-height: 70%;
-        font-family: "Times New Roman", Times, serif;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         flex-direction: column;
         align-items: center;
         justify-content: center;
       }
+      
+      a:link {
+        color: green;
+        text-decoration: none;
+      }
+
+      a:visited {
+        color: pink;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
     </style>
     <title>Hello wasm-pack!</title>
   </head>
@@ -31,11 +46,10 @@
       style="
         margin-bottom: 2em;
         text-align: center;
-        font-family: 'Times New Roman', Times, serif;
       "
     >
       <h1>WASM Game of Life</h1>
-      <h5 style="margin-bottom: 1em;">Propably the millionth experiment ever with Conway's Game of Life</h4>
+      <h5 style="margin-bottom: 1em;">WebAssembly + Rust + wasm-pack = ❤️</h4>
     </div>
     <canvas id="gol-canvas"></canvas>
     <div id="settings-container" style="margin-top: 2em">

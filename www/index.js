@@ -16,7 +16,7 @@ const CELL_SIZE = 10;
 
 const GRID_COLOR = "#050505";
 const DEAD_COLOR = "#0e0e0e";
-const ALIVE_COLOR = "#8fafff";
+const ALIVE_COLOR = "#e8b7b7";
 
 const universe = Universe.new(paramsWidth, paramsHeight);
 // Canvas size
