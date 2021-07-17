@@ -8,13 +8,17 @@ const pauseBtn = document.getElementById("pause-btn");
 const restartBtn = document.getElementById("restart-btn");
 let paused = false;
 
+const urlSearchParams = new URLSearchParams(window.location.search);
+const paramsWidth = urlSearchParams.get("width") || 64;
+const paramsHeight = urlSearchParams.get("height") || 64;
+
 const CELL_SIZE = 10;
 
 const GRID_COLOR = "#050505";
 const DEAD_COLOR = "#0e0e0e";
 const ALIVE_COLOR = "#8fafff";
 
-const universe = Universe.new(128, 128);
+const universe = Universe.new(paramsWidth, paramsHeight);
 // Canvas size
 const width = universe.width();
 const height = universe.height();

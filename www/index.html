@@ -5,19 +5,19 @@
     <style>
       body {
         background-color: #0f0f0f;
-        color: #797979;
+        color: #a3a3a3;
         top: 0;
         font-size: 130%;
         left: 0;
         width: 100%;
         height: 100%;
+        margin: 0;
         display: flex;
         line-height: 70%;
         font-family: "Times New Roman", Times, serif;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        flex-wrap: wrap;
       }
     </style>
     <title>Hello wasm-pack!</title>
@@ -27,11 +27,16 @@
       >This page contains webassembly and javascript content, please enable
       javascript in your browser.</noscript
     >
-    <h1
-      style="margin-bottom: 2em; font-family: 'Times New Roman', Times, serif"
+    <div
+      style="
+        margin-bottom: 2em;
+        text-align: center;
+        font-family: 'Times New Roman', Times, serif;
+      "
     >
-      WASM Game of Life
-    </h1>
+      <h1>WASM Game of Life</h1>
+      <h5 style="margin-bottom: 1em;">Propably the millionth experiment ever with Conway's Game of Life</h4>
+    </div>
     <canvas id="gol-canvas"></canvas>
     <div id="settings-container" style="margin-top: 2em">
       <div class="slidecontainer">
@@ -49,6 +54,12 @@
       <p id="sim-speed">Current simulation speed: 50 fps</p>
       <button id="pause-btn">Pause</button>
       <button id="restart-btn">Restart</button>
+      <p style="font-size: small">
+        Psst, you can also pass in an optional query string for universe size,
+        like this...
+        <a href="/?width=128&height=128">?width=128&height=128 </a>
+      </p>
+      <h6 style="margin-top: 4em; color: #BBBBBB; text-align: center;">Tatu Pesonen</h6>
     </div>
     <script src="./bootstrap.js"></script>
   </body>
